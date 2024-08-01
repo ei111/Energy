@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/4515/4515749.png">
+    <title>Quiz</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .header {
+            background-color: #046aaa;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .header a {
+            color: white;
+            text-decoration: none;
+            padding: 14px 20px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .header a:hover {
+            background-color: #3f9186;
+            border-radius: 4px;
+        }
+        h1 {
+            color: #046aaa;
+            margin-top: 20px;
+        }
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 20px;
+        }
+        .question h3 {
+            color: #333;
+        }
+        .options label {
+            display: block;
+            margin: 10px 0;
+            cursor: pointer;
+        }
+        .options input[type="radio"] {
+            margin-right: 10px;
+        }
+        button {
+            background-color: #046aaa;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #3f9186;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html">Home</a>
+        <a href="quiz.html">Quiz</a>
+    </div>
+
+    <h1>Your Quiz</h1>
+
+    <div class="quiz-container" id="quiz-container">
+        <!-- Questions will be inserted here -->
+    </div>
+
+    <button onclick="checkAnswers()">Submit Quiz</button>
+
+    <script>
+        const topics = {
+            "Kinetic": [
+                { question: "What is the formula for Kinetic Energy?", options: ["GPE = m × g × h", "P = E / t", "KE = 0.5 × m × v²", "E = mc²"], correct: "KE = 0.5 × m × v²" },
+                { question: "Which unit measures Kinetic Energy?", options: ["Newton", "Joule", "Watt", "Volt"], correct: "Joule" },
+                { question: "What does Kinetic Energy depend on?", options: ["Mass and height", "Speed and mass", "Volume and density", "Temperature and pressure"], correct: "Speed and mass" },
+                { question: "Which object has the most Kinetic Energy?", options: ["A stationary car", "A fast-moving car", "A dropped ball", "A stretched spring"], correct: "A fast-moving car" },
+                { question: "What happens to Kinetic Energy when speed doubles?", options: ["It doubles", "It quadruples", "It stays the same", "It halves"], correct: "It quadruples" },
+                { question: "Kinetic Energy is a form of?", options: ["Potential Energy", "Mechanical Energy", "Thermal Energy", "Chemical Energy"], correct: "Mechanical Energy" },
+                { question: "Which law explains the conservation of Kinetic Energy?", options: ["Newton's First Law", "Law of Conservation of Energy", "Newton's Third Law", "Second Law of Thermodynamics"], correct: "Law of Conservation of Energy" },
+                { question: "Kinetic Energy is directly proportional to?", options: ["Velocity", "Mass squared", "Height", "Gravitational pull"], correct: "Mass and Velocity squared" },
+                { question: "The kinetic energy of a moving object is zero when?", options: ["The object is at rest", "The object is at the highest point", "The object is in free fall", "The object is in equilibrium"], correct: "The object is at rest" },
+                { question: "Kinetic Energy can be transformed into?", options: ["Potential Energy", "Thermal Energy", "Chemical Energy", "All of the above"], correct: "All of the above" }
+            ],
+            "Thermal": [
+                { question: "What is Thermal Energy associated with?", options: ["The motion of atoms and molecules", "Stored in chemical bonds", "Gravitational pull", "Magnetic fields"], correct: "The motion of atoms and molecules" },
+                { question: "Which unit measures Thermal Energy?", options: ["Joule", "Newton", "Watt", "Volt"], correct: "Joule" },
+                { question: "Thermal Energy is also known as?", options: ["Heat Energy", "Light Energy", "Sound Energy", "Mechanical Energy"], correct: "Heat Energy" },
+                { question: "What happens to Thermal Energy when a substance is heated?", options: ["It decreases", "It stays the same", "It increases", "It changes to Kinetic Energy"], correct: "It increases" },
+                { question: "Which device measures Thermal Energy?", options: ["Thermometer", "Barometer", "Anemometer", "Hydrometer"], correct: "Thermometer" },
+                { question: "Thermal Energy can be transferred through?", options: ["Conduction", "Convection", "Radiation", "All of the above"], correct: "All of the above" },
+                { question: "Which state of matter has the highest Thermal Energy?", options: ["Solid", "Liquid", "Gas", "Plasma"], correct: "Plasma" },
+                { question: "Thermal Energy flow from a hot object to a cold one is called?", options: ["Convection", "Radiation", "Conduction", "Heat Transfer"], correct: "Heat Transfer" },
+                { question: "What is the primary source of Thermal Energy on Earth?", options: ["The Sun", "Volcanic eruptions", "Geothermal sources", "Chemical reactions"], correct: "The Sun" },
+                { question: "Thermal Energy in a system is proportional to?", options: ["Mass and temperature", "Volume and pressure", "Density and height", "None of the above"], correct: "Mass and temperature" }
+            ],
+            "Sound": [
+                { question: "What is the unit of Sound Energy?", options: ["Joule", "Watt", "Decibel", "Newton"], correct: "Decibel" },
+                { question: "Sound travels fastest in?", options: ["Air", "Water", "Steel", "Vacuum"], correct: "Steel" },
+                { question: "Which of these is the speed of sound in air?", options: ["343 m/s", "1500 m/s", "5000 m/s", "123 m/s"], correct: "343 m/s" },
+                { question: "Sound waves are examples of?", options: ["Longitudinal waves", "Transverse waves", "Surface waves", "None of the above"], correct: "Longitudinal waves" },
+                { question: "What determines the pitch of a sound?", options: ["Frequency", "Amplitude", "Speed", "Wavelength"], correct: "Frequency" },
+                { question: "What does a higher frequency result in?", options: ["Higher pitch", "Lower pitch", "More volume", "Less volume"], correct: "Higher pitch" },
+                { question: "What does amplitude affect in a sound wave?", options: ["Pitch", "Volume", "Speed", "Frequency"], correct: "Volume" },
+                { question: "Which of the following can produce sound?", options: ["Vibrating strings", "Resonant cavities", "Air columns", "All of the above"], correct: "All of the above" },
+                { question: "The Doppler Effect is associated with?", options: ["Change in frequency", "Change in amplitude", "Change in speed", "Change in wavelength"], correct: "Change in frequency" },
+                { question: "What is the range of human hearing?", options: ["20 Hz to 20 kHz", "10 Hz to 10 kHz", "30 Hz to 30 kHz", "5 Hz to 15 kHz"], correct: "20 Hz to 20 kHz" }
+            ],
+            "Electrical": [
+                { question: "What is the formula for Electrical Energy?", options: ["P = E / t", "EE = V × I × t", "E = h × f", "KE = 0.5 × m × v²"], correct: "EE = V × I × t" },
+                { question: "Which unit measures Electrical Energy?", options: ["Joule", "Watt", "Ampere", "Volt"], correct: "Joule" },
+                { question: "What does Electrical Energy depend on?", options: ["Voltage and current", "Resistance and temperature", "Mass and velocity", "Frequency and wavelength"], correct: "Voltage and current" },
+                { question: "Which device measures Electrical Energy?", options: ["Voltmeter", "Ammeter", "Wattmeter", "Galvanometer"], correct: "Wattmeter" },
+                { question: "What is Ohm's Law?", options: ["V = I × R", "P = V × I", "E = P × t", "R = V / I"], correct: "V = I × R" },
+                { question: "What is the SI unit of Electrical Resistance?", options: ["Ohm", "Volt", "Ampere", "Watt"], correct: "Ohm" },
+                { question: "What does the term 'electrical power' refer to?", options: ["Rate of energy transfer", "Amount of energy stored", "Energy per unit charge", "None of the above"], correct: "Rate of energy transfer" },
+                { question: "Which law describes the conservation of Electrical Energy?", options: ["Kirchhoff's Law", "Ohm's Law", "Faraday's Law", "Law of Conservation of Energy"], correct: "Law of Conservation of Energy" },
+                { question: "What is the relationship between voltage, current, and power?", options: ["P = V × I", "P = I × R", "P = V / I", "P = R × I"], correct: "P = V × I" },
+                { question: "Electrical Energy can be transformed into?", options: ["Thermal Energy", "Mechanical Energy", "Light Energy", "All of the above"], correct: "All of the above" }
+            ],
+            "Mechanical": [
+                { question: "Which type of energy is associated with moving objects?", options: ["Mechanical Energy", "Thermal Energy", "Radiant Energy", "Chemical Energy"], correct: "Mechanical Energy" },
+                { question: "Mechanical energy is the sum of:", options: ["Kinetic and potential energy", "Thermal and chemical energy", "Electrical and magnetic energy", "All of the above"], correct: "Kinetic and potential energy" },
+                { question: "Which energy transformation occurs when a ball is thrown into the air?", options: ["Kinetic to potential", "Potential to kinetic", "Thermal to mechanical", "Electrical to mechanical"], correct: "Kinetic to potential" },
+                { question: "The energy due to an object's motion is called:", options: ["Kinetic energy", "Potential energy", "Thermal energy", "Sound energy"], correct: "Kinetic energy" },
+                { question: "The energy stored in an object due to its position is called:", options: ["Potential energy", "Kinetic energy", "Thermal energy", "Mechanical energy"], correct: "Potential energy" },
+                { question: "Mechanical energy can be converted into:", options: ["Thermal energy", "Electrical energy", "Chemical energy", "All of the above"], correct: "All of the above" },
+                { question: "Which device converts mechanical energy into electrical energy?", options: ["Generator", "Battery", "Solar panel", "Transformer"], correct: "Generator" },
+                { question: "In a pendulum, the highest point represents:", options: ["Maximum potential energy", "Maximum kinetic energy", "Minimum potential energy", "Minimum kinetic energy"], correct: "Maximum potential energy" },
+                { question: "The principle of conservation of mechanical energy states that:", options: ["Total mechanical energy remains constant", "Total energy decreases over time", "Mechanical energy can be created", "Mechanical energy is always lost"], correct: "Total mechanical energy remains constant" },
+                { question: "Which type of energy is associated with a compressed spring?", options: ["Elastic potential energy", "Gravitational potential energy", "Kinetic energy", "Chemical energy"], correct: "Elastic potential energy" }
+            ],
+            "Radiant": [
+                { question: "Radiant energy is associated with:", options: ["Electromagnetic waves", "Sound waves", "Mechanical motion", "Gravitational forces"], correct: "Electromagnetic waves" },
+                { question: "Which type of electromagnetic radiation has the highest energy?", options: ["Gamma rays", "X-rays", "Visible light", "Radio waves"], correct: "Gamma rays" },
+                { question: "What is the speed of radiant energy in a vacuum?", options: ["Speed of light", "Speed of sound", "Speed of electricity", "Speed of mechanical waves"], correct: "Speed of light" },
+                { question: "Which of the following is not a type of radiant energy?", options: ["X-rays", "Ultraviolet light", "Sound waves", "Microwaves"], correct: "Sound waves" },
+                { question: "What type of radiant energy is used in microwave ovens?", options: ["Microwaves", "Infrared radiation", "Ultraviolet radiation", "Visible light"], correct: "Microwaves" },
+                { question: "Radiant energy can be transformed into:", options: ["Electrical energy", "Chemical energy", "Thermal energy", "All of the above"], correct: "All of the above" },
+                { question: "Which of the following materials is the best absorber of radiant energy?", options: ["Black material", "White material", "Metal", "Glass"], correct: "Black material" },
+                { question: "The process of converting radiant energy into electrical energy is known as:", options: ["Photovoltaic effect", "Thermoelectric effect", "Photoelectric effect", "Electromagnetic induction"], correct: "Photovoltaic effect" },
+                { question: "Which phenomenon describes the spreading out of radiant energy as it travels away from its source?", options: ["Divergence", "Convergence", "Absorption", "Reflection"], correct: "Divergence" },
+                { question: "What happens to radiant energy when it is absorbed by an object?", options: ["It increases the object's internal energy", "It decreases the object's mass", "It transforms into kinetic energy", "It evaporates"], correct: "It increases the object's internal energy" }
+            ],
+            "Potential": [
+                { question: "What is Potential Energy?", options: ["Energy stored due to an object's position", "Energy of motion", "Energy of heat", "Energy in chemical bonds"], correct: "Energy stored due to an object's position" },
+                { question: "The formula for gravitational potential energy is:", options: ["GPE = m × g × h", "KE = 0.5 × m × v²", "P = E / t", "E = mc²"], correct: "GPE = m × g × h" },
+                { question: "Which factor does not affect gravitational potential energy?", options: ["Height above ground", "Mass of the object", "Acceleration due to gravity", "Speed of the object"], correct: "Speed of the object" },
+                { question: "When an object is at its highest point, its potential energy is:", options: ["Maximum", "Minimum", "Zero", "Negative"], correct: "Maximum" },
+                { question: "As an object falls, its gravitational potential energy:", options: ["Decreases", "Increases", "Remains the same", "Transforms into sound energy"], correct: "Decreases" },
+                { question: "Elastic potential energy is stored in:", options: ["Compressed or stretched objects", "Heated objects", "Moving objects", "Electric circuits"], correct: "Compressed or stretched objects" },
+                { question: "Which type of potential energy is associated with a stretched spring?", options: ["Elastic potential energy", "Gravitational potential energy", "Chemical potential energy", "Electrostatic potential energy"], correct: "Elastic potential energy" },
+                { question: "Potential energy can be converted into:", options: ["Kinetic energy", "Thermal energy", "Chemical energy", "All of the above"], correct: "All of the above" },
+                { question: "The potential energy of an object is zero when:", options: ["It is at the reference level", "It is in motion", "It is heated", "It is compressed"], correct: "It is at the reference level" },
+                { question: "Which energy transformation occurs when an object is dropped from a height?", options: ["Potential to kinetic", "Kinetic to potential", "Mechanical to thermal", "Electrical to mechanical"], correct: "Potential to kinetic" }
+            ],
+            "Gravitational Potential": [
+                { question: "What does Gravitational Potential Energy depend on?", options: ["Mass, height, and gravitational acceleration", "Speed, temperature, and pressure", "Voltage, current, and resistance", "Force, area, and distance"], correct: "Mass, height, and gravitational acceleration" },
+                { question: "The formula for gravitational potential energy is:", options: ["GPE = m × g × h", "KE = 0.5 × m × v²", "P = E / t", "E = mc²"], correct: "GPE = m × g × h" },
+                { question: "Gravitational potential energy is highest when an object is:", options: ["At its highest point", "In free fall", "At the reference level", "In motion"], correct: "At its highest point" },
+                { question: "If the height of an object is doubled, its gravitational potential energy:", options: ["Doubles", "Triples", "Quadruples", "Remains the same"], correct: "Doubles" },
+                { question: "The gravitational potential energy of an object is zero at:", options: ["The reference level", "Its highest point", "Its lowest point", "When in motion"], correct: "The reference level" },
+                { question: "What happens to the gravitational potential energy of an object when it falls?", options: ["It decreases", "It increases", "It remains the same", "It transforms into kinetic energy"], correct: "It decreases" },
+                { question: "Gravitational potential energy can be converted into:", options: ["Kinetic energy", "Thermal energy", "Sound energy", "All of the above"], correct: "Kinetic energy" },
+                { question: "Which of the following factors does not affect gravitational potential energy?", options: ["Mass of the object", "Height of the object", "Gravitational acceleration", "Speed of the object"], correct: "Speed of the object" },
+                { question: "When an object is lifted, its gravitational potential energy:", options: ["Increases", "Decreases", "Remains the same", "Transforms into heat"], correct: "Increases" },
+                { question: "Which energy transformation occurs when an object is dropped from a height?", options: ["Gravitational potential to kinetic energy", "Kinetic to potential energy", "Thermal to mechanical energy", "Electrical to mechanical energy"], correct: "Gravitational potential to kinetic energy" }
+            ],
+            
+    "Elastic Potential": [
+        { question: "What is Elastic Potential Energy stored in?", options: ["Stretching or compressing materials", "Chemical bonds", "Magnetic fields", "Electric fields"], correct: "Stretching or compressing materials" },
+        { question: "Which of the following is an example of Elastic Potential Energy?", options: ["A compressed spring", "A moving car", "A flowing river", "A glowing light bulb"], correct: "A compressed spring" },
+        { question: "What happens to Elastic Potential Energy when the force is removed?", options: ["It is converted into kinetic energy", "It remains stored in the object", "It disappears", "It is transferred to the surroundings as heat"], correct: "It is converted into kinetic energy" },
+        { question: "Which law explains the behavior of Elastic Potential Energy in springs?", options: ["Hooke’s Law", "Boyle’s Law", "Newton's Third Law", "Charles' Law"], correct: "Hooke’s Law" },
+        { question: "What kind of force is responsible for Elastic Potential Energy?", options: ["Restorative force", "Gravitational force", "Electromagnetic force", "Nuclear force"], correct: "Restorative force" },
+        { question: "Which of the following materials would best demonstrate Elastic Potential Energy?", options: ["Rubber band", "Steel bar", "Copper wire", "Wooden plank"], correct: "Rubber band" },
+        { question: "In which of the following scenarios is Elastic Potential Energy NOT involved?", options: ["Stretched rubber band", "Compressed spring", "Raising a weight", "Bent diving board"], correct: "Raising a weight" },
+        { question: "Elastic Potential Energy is highest when:", options: ["The object is fully compressed or stretched", "The object is at rest", "The object is moving at high speed", "The object is heated"], correct: "The object is fully compressed or stretched" },
+        { question: "Which factor does NOT affect Elastic Potential Energy?", options: ["Material elasticity", "Deformation distance", "Mass of the object", "Temperature"], correct: "Mass of the object" },
+        { question: "What is the unit of Elastic Potential Energy?", options: ["Joule", "Newton", "Watt", "Pascal"], correct: "Joule" }
+    ],
+
+    "Electric Potential": [
+        { question: "What is Electric Potential Energy related to?", options: ["Charges and their positions", "Magnetic fields", "Mechanical motion", "Temperature changes"], correct: "Charges and their positions" },
+        { question: "Which formula is used to calculate Electric Potential Energy?", options: ["U = kQq/r", "F = ma", "E = mc²", "P = IV"], correct: "U = kQq/r" },
+        { question: "Electric Potential Energy between two like charges is:", options: ["Positive", "Negative", "Zero", "Depends on the distance"], correct: "Positive" },
+        { question: "What happens to Electric Potential Energy when opposite charges are brought closer?", options: ["It decreases", "It increases", "It stays the same", "It becomes zero"], correct: "It decreases" },
+        { question: "Electric Potential Energy is highest when:", options: ["Charges are far apart", "Charges are close together", "There is no charge", "Charges are moving"], correct: "Charges are far apart" },
+        { question: "Which factor does NOT affect Electric Potential Energy?", options: ["Charge quantity", "Distance between charges", "Medium between charges", "Mass of the charges"], correct: "Mass of the charges" },
+        { question: "What is the unit of Electric Potential Energy?", options: ["Joule", "Newton", "Volt", "Watt"], correct: "Joule" },
+        { question: "Electric Potential Energy can be converted into which of the following?", options: ["Kinetic Energy", "Thermal Energy", "Chemical Energy", "All of the above"], correct: "All of the above" },
+        { question: "Electric Potential Energy is a form of which type of energy?", options: ["Potential Energy", "Kinetic Energy", "Thermal Energy", "Mechanical Energy"], correct: "Potential Energy" },
+        { question: "Electric Potential Energy is related to the work done to move a charge in an:", options: ["Electric field", "Magnetic field", "Gravitational field", "None of the above"], correct: "Electric field" }
+    ],
+
+    "Magnetic Potential": [
+        { question: "What is Magnetic Potential Energy associated with?", options: ["Magnetic fields and magnetic objects", "Electric charges", "Chemical reactions", "Gravitational pull"], correct: "Magnetic fields and magnetic objects" },
+        { question: "Which of the following is an example of Magnetic Potential Energy?", options: ["Two attracting magnets", "A spinning top", "A moving car", "A stretched rubber band"], correct: "Two attracting magnets" },
+        { question: "What happens to Magnetic Potential Energy when two opposite poles are brought closer?", options: ["It decreases", "It increases", "It stays the same", "It becomes zero"], correct: "It decreases" },
+        { question: "Magnetic Potential Energy is highest when:", options: ["Magnetic poles are far apart", "Magnetic poles are close together", "There is no magnetic field", "Magnets are moving"], correct: "Magnetic poles are far apart" },
+        { question: "Which factor does NOT affect Magnetic Potential Energy?", options: ["Magnetic field strength", "Distance between magnetic poles", "Type of material", "Color of magnets"], correct: "Color of magnets" },
+        { question: "What is the unit of Magnetic Potential Energy?", options: ["Joule", "Tesla", "Newton", "Gauss"], correct: "Joule" },
+        { question: "Magnetic Potential Energy can be converted into which of the following?", options: ["Kinetic Energy", "Electric Energy", "Thermal Energy", "All of the above"], correct: "All of the above" },
+        { question: "Magnetic Potential Energy is a form of which type of energy?", options: ["Potential Energy", "Kinetic Energy", "Thermal Energy", "Mechanical Energy"], correct: "Potential Energy" },
+        { question: "Magnetic Potential Energy is related to the work done to move a magnetic object in a:", options: ["Magnetic field", "Electric field", "Gravitational field", "None of the above"], correct: "Magnetic field" },
+        { question: "Which of the following increases Magnetic Potential Energy?", options: ["Increasing the distance between opposite poles", "Decreasing the distance between opposite poles", "Removing the magnetic field", "Changing the temperature"], correct: "Increasing the distance between opposite poles" }
+    ],
+
+    "Heat Potential": [
+        { question: "What is Heat Potential Energy associated with?", options: ["Temperature and thermal energy storage", "Chemical reactions", "Gravitational pull", "Magnetic fields"], correct: "Temperature and thermal energy storage" },
+        { question: "Which of the following is an example of Heat Potential Energy?", options: ["A hot cup of coffee", "A moving car", "A stretched rubber band", "A glowing light bulb"], correct: "A hot cup of coffee" },
+        { question: "What happens to Heat Potential Energy when an object cools down?", options: ["It decreases", "It increases", "It stays the same", "It becomes zero"], correct: "It decreases" },
+        { question: "Heat Potential Energy is highest when:", options: ["Temperature is high", "Temperature is low", "There is no thermal energy", "Object is in motion"], correct: "Temperature is high" },
+        { question: "Which factor does NOT affect Heat Potential Energy?", options: ["Temperature", "Mass", "Heat capacity", "Color of the object"], correct: "Color of the object" },
+        { question: "What is the unit of Heat Potential Energy?", options: ["Joule", "Calorie", "Watt", "Pascal"], correct: "Joule" },
+        { question: "Heat Potential Energy can be converted into which of the following?", options: ["Kinetic Energy", "Electric Energy", "Chemical Energy", "All of the above"], correct: "All of the above" },
+        { question: "Heat Potential Energy is a form of which type of energy?", options: ["Thermal Energy", "Kinetic Energy", "Potential Energy", "Mechanical Energy"], correct: "Thermal Energy" },
+        { question: "Heat Potential Energy is related to the work done to increase the:", options: ["Temperature of a substance", "Mass of an object", "Height of an object", "Speed of an object"], correct: "Temperature of a substance" },
+        { question: "Which of the following increases Heat Potential Energy?", options: ["Increasing temperature", "Decreasing temperature", "Reducing mass", "Lowering pressure"], correct: "Increasing temperature" }
+    ],
+
+    "Chemical Potential": [
+        { question: "What is Chemical Potential Energy stored in?", options: ["Chemical bonds of substances", "Gravitational fields", "Magnetic fields", "Thermal gradients"], correct: "Chemical bonds of substances" },
+        { question: "Which of the following is an example of Chemical Potential Energy?", options: ["A battery", "A moving car", "A stretched rubber band", "A glowing light bulb"], correct: "A battery" },
+        { question: "What happens to Chemical Potential Energy when a chemical reaction occurs?", options: ["It is converted to other forms of energy", "It remains unchanged", "It disappears", "It becomes thermal energy"], correct: "It is converted to other forms of energy" },
+        { question: "Chemical Potential Energy is highest in:", options: ["Unstable compounds", "Stable compounds", "Noble gases", "Water"], correct: "Unstable compounds" },
+        { question: "Which factor does NOT affect Chemical Potential Energy?", options: ["Bond strength", "Temperature", "Pressure", "Size of the container"], correct: "Size of the container" },
+        { question: "What is the unit of Chemical Potential Energy?", options: ["Joule", "Mole", "Watt", "Volt"], correct: "Joule" },
+        { question: "Chemical Potential Energy can be converted into which of the following?", options: ["Kinetic Energy", "Thermal Energy", "Mechanical Energy", "All of the above"], correct: "All of the above" },
+        { question: "Chemical Potential Energy is a form of which type of energy?", options: ["Potential Energy", "Kinetic Energy", "Mechanical Energy", "Nuclear Energy"], correct: "Potential Energy" },
+        { question: "Chemical Potential Energy is related to the work done to:", options: ["Break or form chemical bonds", "Move a charge in an electric field", "Change the state of matter", "Reflect light off a surface"], correct: "Break or form chemical bonds" },
+        { question: "Which of the following is a source of Chemical Potential Energy?", options: ["Fuel", "Water", "Air", "Sunlight"], correct: "Fuel" }
+    ]
+}
+
+
+        
+
+        function loadQuiz() {
+            const params = new URLSearchParams(window.location.search);
+            const topic = params.get('topic');
+            const numQuestions = parseInt(params.get('numQuestions'));
+
+            if (!topics[topic]) {
+                document.getElementById('quiz-container').innerHTML = '<p>Invalid topic selected.</p>';
+                return;
+            }
+
+            const questions = topics[topic].slice(0, numQuestions);
+            const quizContainer = document.getElementById('quiz-container');
+
+            quizContainer.innerHTML = '';
+            questions.forEach((q, index) => {
+                const questionDiv = document.createElement('div');
+                questionDiv.className = 'question';
+                questionDiv.innerHTML = `
+                    <h3>${index + 1}. ${q.question}</h3>
+                    <div class="options">
+                        ${q.options.map((option, i) => `
+                            <label>
+                                <input type="radio" name="question${index}" value="${option}">
+                                ${option}
+                            </label>
+                        `).join('')}
+                    </div>
+                `;
+                quizContainer.appendChild(questionDiv);
+            });
+        }
+
+        function checkAnswers() {
+            const params = new URLSearchParams(window.location.search);
+            const topic = params.get('topic');
+            const numQuestions = parseInt(params.get('numQuestions'));
+
+            if (!topics[topic]) {
+                document.getElementById('result').innerText = 'Invalid topic selected.';
+                return;
+            }
+
+            const questions = topics[topic].slice(0, numQuestions);
+            let score = 0;
+
+            questions.forEach((q, index) => {
+                const selectedOption = document.querySelector(`input[name="question${index}"]:checked`);
+                if (selectedOption && selectedOption.value === q.correct) {
+                    score++;
+                }
+            });
+
+            window.location.href = `results.html?score=${score}&topic=${topic}&numQuestions=${numQuestions}`;
+        }
+
+        window.onload = loadQuiz;
+    </script>
+</body>
+</html>

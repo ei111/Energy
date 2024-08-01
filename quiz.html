@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Selection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .header {
+            background-color: #046aaa;
+            padding: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+        .header a {
+            color: white;
+            text-decoration: none;
+            padding: 14px 20px;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+        .header a:hover {
+            background-color: #3f9186;
+            border-radius: 4px;
+        }
+        h1 {
+            color: #046aaa;
+            margin-top: 20px;
+        }
+        .quiz-selection {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+        .quiz-selection label {
+            display: block;
+            margin: 10px 0;
+        }
+        select, button {
+            padding: 10px;
+            font-size: 16px;
+            margin-top: 10px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+        }
+        button {
+            background-color: #046aaa;
+            color: white;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #3f9186;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <a href="index.html">Home</a>
+        <a href="quiz.html">Quiz</a>
+    </div>
+
+    <h1>Select a Quiz</h1>
+
+    <div class="quiz-selection">
+        <form id="quiz-form">
+            <label for="topic">Select Quiz Topic:</label>
+            <select id="topic" name="topic">
+                <option value="Kinetic">Kinetic Energy</option>
+                <option value="Thermal">Thermal Energy</option>
+                <option value="Sound">Sound Energy</option>
+                <option value="Electrical">Electrical Energy</option>
+                <option value="Mechanical">Mechanical Energy</option>
+                <option value="Radiant">Radiant Energy</option>
+                <option value="Potential">Potential Energy</option>
+                <option value="Gravitational Potential">Gravitational Potential Energy</option>
+                <option value="Elastic Potential">Elastic Potential Energy</option>
+                <option value="Electric  Potential">Electric Potential Energy</option>
+                <option value="Magnetic Potential">Magnetic Potential Energy</option>
+                <option value="Heat Potential">Heat Potential Energy</option>
+                <option value="Chemical Potential">Chemical Potential Energy</option>
+            </select>
+
+            <label for="numQuestions">Select Number of Questions:</label>
+            <select id="numQuestions" name="numQuestions">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+                <br>
+                <br>
+            </select>
+                <br>
+                <br>
+            <button type="button" onclick="startQuiz()">Start Quiz</button>
+        </form>
+    </div>
+
+    <script>
+        function startQuiz() {
+            const topic = document.getElementById('topic').value;
+            const numQuestions = document.getElementById('numQuestions').value;
+
+            if (topic && numQuestions) {
+                window.location.href = `quiz1.html?topic=${topic}&numQuestions=${numQuestions}`;
+            } else {
+                alert('Please select both a topic and the number of questions.');
+            }
+        }
+    </script>
+</body>
+</html>
