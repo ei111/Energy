@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Energy Poster</title>
+    <title>Magnifier Page</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
         body {
@@ -26,11 +26,18 @@
             text-align: center;
             font-size: 24px;
             box-shadow: 0px 4px 2px -2px gray;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 10;
         }
 
         .img-magnifier-container {
             position: relative;
-            margin-top: 50px;
+            margin-top: 70px; /* Space for header */
+            width: 90%;
+            max-width: 1200px;
+            flex-grow: 1;
         }
 
         .img-magnifier-glass {
@@ -55,6 +62,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            margin-bottom: 30px;
         }
 
         .btnh:hover {
@@ -63,10 +71,8 @@
 
         .img {
             display: block;
-            max-width: 100%;
+            width: 100%;
             height: auto;
-            margin-left: auto; 
-            margin-right: auto;
             border: 5px solid #ddd;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
         }
@@ -74,7 +80,7 @@
 </head>
 <body>
     <div class="header">
-        Energy Poster
+        Magnifier Page
     </div>
     <div class="img-magnifier-container">
         <img src="poster.jpg" class="img" alt="Poster Image">
