@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/512/4515/4515749.png">
     <title>Quiz Selection</title>
     <style>
         body {
@@ -100,18 +101,7 @@
 
             <label for="numQuestions">Select Number of Questions:</label>
             <select id="numQuestions" name="numQuestions">
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-                <option value="6">6</option>
-                <option value="7">7</option>
-                <option value="8">8</option>
-                <option value="9">9</option>
-                <option value="10">10</option>
-                <br>
-                <br>
+
             </select>
                 <br>
                 <br>
@@ -129,6 +119,22 @@
             } else {
                 alert('Please select both a topic and the number of questions.');
             }
+            if (topic === 'General') {
+                const options = [15, 20, 25, 30, 45, 50, 75, 100, 130];
+                options.forEach(option => {
+                    const opt = document.createElement('option');
+                    opt.value = option;
+                    opt.textContent = option;
+                    numQuestionsSelect.appendChild(opt);
+                });
+            } else {
+                // For other topics, use a default set of options
+                for (let i = 1; i <= 10; i++) {
+                    const opt = document.createElement('option');
+                    opt.value = i;
+                    opt.textContent = i;
+                    numQuestionsSelect.appendChild(opt);
+                }
         }
     </script>
 </body>
