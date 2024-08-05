@@ -110,15 +110,14 @@
     </div>
 
     <script>
-        function startQuiz() {
+        function updateNumQuestions() {
             const topic = document.getElementById('topic').value;
-            const numQuestions = document.getElementById('numQuestions').value;
+            const numQuestionsSelect = document.getElementById('numQuestions');
 
-            if (topic && numQuestions) {
-                window.location.href = `quiz1.html?topic=${topic}&numQuestions=${numQuestions}`;
-            } else {
-                alert('Please select both a topic and the number of questions.');
-            }
+            // Clear existing options
+            numQuestionsSelect.innerHTML = '';
+
+            // If "General" is selected, add specific options
             if (topic === 'General') {
                 const options = [15, 20, 25, 30, 45, 50, 75, 100, 130];
                 options.forEach(option => {
@@ -135,7 +134,22 @@
                     opt.textContent = i;
                     numQuestionsSelect.appendChild(opt);
                 }
+            }
         }
+
+        function startQuiz() {
+            const topic = document.getElementById('topic').value;
+            const numQuestions = document.getElementById('numQuestions').value;
+
+            if (topic && numQuestions) {
+                window.location.href = `quiz1.html?topic=${topic}&numQuestions=${numQuestions}`;
+            } else {
+                alert('Please select both a topic and the number of questions.');
+            }
+        }
+
+        // Initialize the number of questions dropdown when the page loads
+        updateNumQuestions();
     </script>
 </body>
 </html>
